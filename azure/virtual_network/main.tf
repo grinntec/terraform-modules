@@ -10,8 +10,8 @@ resource "random_id" "random_id" {
 
 # Create resource group
 resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-  location = var.resource_group_location
+  name     = var.name
+  location = var.location
 
   tags = local.tags
 }
