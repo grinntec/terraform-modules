@@ -1,20 +1,21 @@
 variable "location" {
-  description = "The loaction of the VNET"
+      type            = string
+  description = "The location of the resource"
 }
 
-
-//Application
 variable "appName" {
-    description     = "Name of the application"
     type            = string
+  description     = "Name of the application"
+
 }
 
-variable "environment" {
+/*variable "environment" {
     description     = "Type of environment; PROD or DEV"
     type            = string
-}
+}*/
 
-variable "created_by" {
+  /*variable "created_by" {
     description     = "Name of who created the resource"
     type            = string
 }
+*/
