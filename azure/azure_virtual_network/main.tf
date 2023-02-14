@@ -68,7 +68,7 @@ resource "azurerm_network_security_rule" "nsg-rule" {
 ////////////////////////////////////////////////////////////////////////////////////////
 locals {
   tags = {
-    env         = var.environment
-    }
+    env = var.environment
+  }
 }
 
