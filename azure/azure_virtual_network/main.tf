@@ -1,4 +1,4 @@
-# Generate random text for a unique storage account name
+/*# Generate random text for a unique storage account name
 resource "random_id" "random_id" {
   keepers = {
     # Generate a new ID only when a new resource group is defined
@@ -6,27 +6,28 @@ resource "random_id" "random_id" {
   }
 
   byte_length = 8
-}
+}*/
 
 # Create resource group
 resource "azurerm_resource_group" "rg" {
-  name     = var.name
-  location = var.location
+  name     = var.rg_name
+  location = var.rg_location
 
   tags = local.tags
 }
 
 # Create virtual network
 resource "azurerm_virtual_network" "vnet" {
-  name                = "vnet"
+  name                = "vnet-${var.subscription_name}"
   resource_group_name = azurerm_resource_group.rg.name # By referencing the azurerm value it creates an implicit dependancy to the RG being created first
   location            = azurerm_resource_group.rg.location
   address_space       = ["10.123.0.0/16"]
+  dns_servers
 
   tags = local.tags
 }
 
-# Create subnet
+/*# Create subnet
 resource "azurerm_subnet" "subnet" {
   name                 = "subnet"
   resource_group_name  = azurerm_resource_group.rg.name
@@ -62,7 +63,7 @@ resource "azurerm_network_security_rule" "nsg-rule" {
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.nsg.name
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////////////
 // LOCALS
 ////////////////////////////////////////////////////////////////////////////////////////
