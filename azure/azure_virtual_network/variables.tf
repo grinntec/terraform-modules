@@ -45,4 +45,4 @@ variable "address_prefixes" {
       address_prefixes = ["10.123.2.0/24"]
     }
   }
-}
+}*/
