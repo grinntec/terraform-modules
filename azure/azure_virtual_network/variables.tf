@@ -33,7 +33,7 @@ variable "address_prefixes" {
   type        = list(any)
 }*/
 
-variable "subnets" {
+/*variable "subnets" {
   type = map(any)
   default = {
     #subnet_01 = {
