@@ -19,16 +19,30 @@ variable "subscription_name" {
 }
 
 variable "address_space" {
-    description = "The address space of the vnet"
-    type = list
+  description = "The address space of the vnet"
+  type        = list(any)
 }
 
-variable "subnet_name" {
+/*variable "subnet_name" {
   description = "Name of the subscription"
   type        = string
 }
 
 variable "address_prefixes" {
   description = "Name of the subscription"
-  type        = list
+  type        = list(any)
+}*/
+
+variable "subnets" {
+  type = map(any)
+  default = {
+    subnet_01 = {
+      name             = "subnet_01"
+      address_prefixes = ["10.123.1.0/24"]
+    }
+    subnet_02 = {
+      name             = "subnet_02"
+      address_prefixes = ["10.123.2.0/24"]
+    }
+  }
 }

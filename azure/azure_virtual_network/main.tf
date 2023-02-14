@@ -16,27 +16,22 @@ resource "azurerm_virtual_network" "vnet" {
   tags = local.tags
 }
 
+# Create the subnet(s)
 resource "azurerm_subnet" "subnet" {
-  name                                          = var.subnet_name       
-  resource_group_name                           = var.rg_name           
-  virtual_network_name                          = "vnet-${var.subscription_name}"
-  address_prefixes                              = var.address_prefixes    
+  for_each = var.subnets
+  #name                                          = var.subnet_name       
+  name                 = each.value["name"]
+  resource_group_name  = var.rg_name
+  virtual_network_name = "vnet-${var.subscription_name}"
+  #address_prefixes                              = var.address_prefixes    
+  address_prefixes = each.value["address_prefixes"]
   #service_endpoints                             = var.service_endpoints 
-  private_endpoint_network_policies_enabled     = true                  
-  private_link_service_network_policies_enabled = true                  
+  private_endpoint_network_policies_enabled     = true
+  private_link_service_network_policies_enabled = true
 }
 
 
-
-
-/*# Create subnet
-resource "azurerm_subnet" "subnet" {
-  name                 = "subnet"
-  resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.123.1.0/24"]
-}
-
+/*
 # Create network security group
 resource "azurerm_network_security_group" "nsg" {
   name                = "nsg"
