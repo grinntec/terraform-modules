@@ -8,20 +8,20 @@ resource "random_id" "random_id" {
   byte_length = 8
 }*/
 
-# Create resource group
+/*# Create resource group
 resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
   location = var.rg_location
 
   tags = local.tags
-}
+}*/
 
 # Create virtual network
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-${var.subscription_name}"
   resource_group_name = azurerm_resource_group.rg.name # By referencing the azurerm value it creates an implicit dependancy to the RG being created first
   location            = azurerm_resource_group.rg.location
-  address_space       = ["10.123.0.0/16"]
+  address_space       = var.vnet_address_space
 
   tags = local.tags
 }

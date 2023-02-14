@@ -18,7 +18,7 @@ variable "subscription_name" {
   type        = string
 }
 
-/*variable "vnet_address_space" {
+variable "vnet_address_space" {
     description = "The address space of the vnet"
     type = list
-}*/
+}
