@@ -36,10 +36,10 @@ variable "address_prefixes" {
 variable "subnets" {
   type = map(any)
   default = {
-    subnet_01 = {
-      name             = "subnet_01"
-      address_prefixes = ["10.123.1.0/24"]
-    }
+    #subnet_01 = {
+    #  name             = "subnet_01"
+    #  address_prefixes = ["10.123.1.0/24"]
+    #}
     subnet_02 = {
       name             = "subnet_02"
       address_prefixes = ["10.123.2.0/24"]
