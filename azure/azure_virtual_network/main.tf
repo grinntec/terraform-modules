@@ -16,7 +16,7 @@ resource "azurerm_virtual_network" "vnet" {
   tags = local.tags
 }
 
-# Create the subnet(s)
+/*# Create the subnet(s)
 resource "azurerm_subnet" "subnet" {
   for_each = var.subnets
   #name                                          = var.subnet_name       
@@ -28,7 +28,7 @@ resource "azurerm_subnet" "subnet" {
   #service_endpoints                             = var.service_endpoints 
   private_endpoint_network_policies_enabled     = true
   private_link_service_network_policies_enabled = true
-}
+}*/
 
 
 /*
