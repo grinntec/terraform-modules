@@ -22,3 +22,13 @@ variable "address_space" {
     description = "The address space of the vnet"
     type = list
 }
+
+variable "subnet_name" {
+  description = "Name of the subscription"
+  type        = string
+}
+
+variable "address_prefixes" {
+  description = "Name of the subscription"
+  type        = list
+}
