@@ -14,8 +14,8 @@ locals {
 
 #Get the NIC ID from a provided NIC
 data "azurerm_network_interface" "vm_nic" {
-  name                = "nic_3674fe6d109e066c"
-  resource_group_name = "apache-server-mod"
+  name                = var.nic_id
+  resource_group_name = var.rg_name
 }
 
 ///
@@ -49,8 +49,8 @@ resource "azurerm_lb_rule" "public_lb_inbound_rules" {
   loadbalancer_id                = azurerm_lb.public_lb.id
   name                           = "inbound_rule_http"
   protocol                       = "Tcp"
-  frontend_port                  = 80
-  backend_port                   = 80
+  frontend_port                  = var.frontend_port
+  backend_port                   = var.baclendtend_port
   frontend_ip_configuration_name = "PublicIPAddress"
   probe_id                       = azurerm_lb_probe.http_inbound_probe.id
   backend_address_pool_ids       = ["${azurerm_lb_backend_address_pool.backend_pool.id}"]
@@ -60,7 +60,7 @@ resource "azurerm_lb_rule" "public_lb_inbound_rules" {
 resource "azurerm_lb_probe" "http_inbound_probe" {
   loadbalancer_id = azurerm_lb.public_lb.id
   name            = "http_inbound_probe"
-  port            = 80
+  port            = var.health_probe_port
 }
 
 #Create Backend Address Pool
