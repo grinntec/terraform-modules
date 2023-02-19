@@ -1,3 +1,17 @@
+///
+//LOCALS
+//
+
+locals {
+  tags = {
+    env = var.environment
+  }
+}
+
+///
+//RESOURCES
+//
+
 resource "azurerm_public_ip" "pip_lb" {
   name                = "PublicIPForLB"
   location            = var.rg_location
@@ -17,8 +31,4 @@ resource "azurerm_lb" "lb" {
   }
   tags = local.tags
 }
-locals {
-  tags = {
-    env = var.environment
-  }
-}
+
