@@ -33,7 +33,7 @@ resource "azurerm_public_ip" "pip_public_lb" {
 
 #Create load balancer and attached public IP to front end
 resource "azurerm_lb" "public_lb" {
-  name                = "PublicLoadBalancer"
+  name                = "LoadBalancerPublic"
   location            = var.rg_location
   resource_group_name = var.rg_name
 
