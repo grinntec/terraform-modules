@@ -1,5 +1,5 @@
 ///
-/LOCALS
+// LOCALS
 ///
 locals {
   tags = {
@@ -8,7 +8,7 @@ locals {
 }
 
 ///
-/DATA SOURCE
+// DATA SOURCE
 ///
 data "azurerm_subnet" "subnet" {
   name = var.subnet_name
@@ -17,7 +17,7 @@ data "azurerm_subnet" "subnet" {
 }
 
 ///
-/RESOURCES
+// RESOURCES
 ///
 
 # Create network security group
@@ -49,5 +49,3 @@ resource "azurerm_network_security_rule" "nsg-rule" {
   resource_group_name         = var.rg_name
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
-
-
