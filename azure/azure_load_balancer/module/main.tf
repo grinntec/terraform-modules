@@ -9,6 +9,16 @@ locals {
 }
 
 ///
+// DATA SOURCES
+///
+
+#Get the NIC ID from a provided NIC
+data "azurerm_network_interface" "vm_nic" {
+  name                = "nic_3674fe6d109e066c"
+  resource_group_name = "apache-server-mod"
+}
+
+///
 //RESOURCES
 //
 
@@ -37,7 +47,6 @@ resource "azurerm_lb" "public_lb" {
 #Create Load balancing rules
 resource "azurerm_lb_rule" "public_lb_inbound_rules" {
   loadbalancer_id                = azurerm_lb.public_lb.id
-  #resource_group_name            = var.rg_name
   name                           = "inbound_rule_http"
   protocol                       = "Tcp"
   frontend_port                  = 80
@@ -45,13 +54,10 @@ resource "azurerm_lb_rule" "public_lb_inbound_rules" {
   frontend_ip_configuration_name = "PublicIPAddress"
   probe_id                       = azurerm_lb_probe.http_inbound_probe.id
   backend_address_pool_ids       = ["${azurerm_lb_backend_address_pool.backend_pool.id}"]
-
-
 }
 
 #Create Probe
 resource "azurerm_lb_probe" "http_inbound_probe" {
-  #resource_group_name = var.rg_name
   loadbalancer_id     = azurerm_lb.public_lb.id
   name                = "http_inbound_probe"
   port                = 80
@@ -61,4 +67,11 @@ resource "azurerm_lb_probe" "http_inbound_probe" {
 resource "azurerm_lb_backend_address_pool" "backend_pool" {
   loadbalancer_id = azurerm_lb.public_lb.id
   name            = "backend_pool"
+}
+
+#Add a virtual machine NIC to the backend pool
+resource "azurerm_network_interface_backend_address_pool_association" "bep_association" {
+  network_interface_id    = data.azurerm_network_interface.vm_nic.id
+  ip_configuration_name   = "testconfiguration1"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
 }
