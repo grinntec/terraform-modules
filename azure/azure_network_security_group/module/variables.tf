@@ -23,37 +23,37 @@ variable "vnet_name" {
   type        = string
 }
 
-variable "nsg_rule_name"{
+variable "nsg_rule_name" {
   description = "Name of the NSG rule"
-  type = string
+  type        = string
 }
 
-variable "nsg_rule_priority"{
+variable "nsg_rule_priority" {
   description = "Priority of the NSG rule"
-  type = string
+  type        = string
 }
 
-variable "nsg_rule_direction"{
+variable "nsg_rule_direction" {
   description = "Direction of the NSG rule"
-  type = string
+  type        = string
 }
 
-variable "nsg_rule_access"{
+variable "nsg_rule_access" {
   description = "Allow or deny of the NSG rule"
-  type = string
+  type        = string
 }
 
-variable "nsg_rule_protocol"{
+variable "nsg_rule_protocol" {
   description = "Procotol of the NSG rule"
-  type = string
+  type        = string
 }
 
-variable "nsg_rule_destination_port"{
+variable "nsg_rule_destination_port" {
   description = "Destination port of the NSG rule"
-  type = string
+  type        = string
 }
 
-variable "nsg_rule_source"{
+variable "nsg_rule_source" {
   description = "Source of the NSG rule"
-  type = string
+  type        = string
 }

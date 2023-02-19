@@ -11,9 +11,9 @@ locals {
 // DATA SOURCE
 ///
 data "azurerm_subnet" "subnet" {
-  name = var.subnet_name
+  name                 = var.subnet_name
   virtual_network_name = var.vnet_name
-  resource_group_name = var.rg_name
+  resource_group_name  = var.rg_name
 }
 
 ///
@@ -49,17 +49,3 @@ resource "azurerm_network_security_rule" "nsg-rule" {
   resource_group_name         = var.rg_name
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
-/*# Create network security group rule
-resource "azurerm_network_security_rule" "nsg-rule" {
-  name                        = "rule01"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "80"
-  source_address_prefix       = "185.203.216.232" # You need to use your connecting system public IP address, use ipchicken.com
-  destination_address_prefix  = "*"
-  resource_group_name         = var.rg_name
-  network_security_group_name = azurerm_network_security_group.nsg.name
-}*/
