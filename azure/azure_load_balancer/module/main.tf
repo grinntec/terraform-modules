@@ -51,7 +51,7 @@ resource "azurerm_lb_rule" "public_lb_inbound_rules" {
 
 #Create Probe
 resource "azurerm_lb_probe" "http_inbound_probe" {
-  resource_group_name = var.rg_name
+  #resource_group_name = var.rg_name
   loadbalancer_id     = azurerm_lb.public_lb.id
   name                = "http_inbound_probe"
   port                = 80
