@@ -17,3 +17,8 @@ variable "subnet_name" {
   description = "Name of the subscription"
   type        = string
 }
+
+variable "vnet_name" {
+  description = "Name of the subscription"
+  type        = string
+}
