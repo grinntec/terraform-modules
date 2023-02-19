@@ -16,10 +16,6 @@ data "azurerm_subnet" "subnet" {
   resource_group_name = var.rg_name
 }
 
-output Subnet_id" {
-  value = "${data.azurerm_subnet.subnet.id}"
-}
-
 ///
 /RESOURCES
 ///
