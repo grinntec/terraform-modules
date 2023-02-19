@@ -37,7 +37,7 @@ resource "azurerm_lb" "public_lb" {
 #Create Load balancing rules
 resource "azurerm_lb_rule" "public_lb_inbound_rules" {
   loadbalancer_id                = azurerm_lb.public_lb.id
-  resource_group_name            = var.rg_name
+  #resource_group_name            = var.rg_name
   name                           = "inbound_rule_http"
   protocol                       = "Tcp"
   frontend_port                  = 80
