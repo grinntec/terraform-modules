@@ -44,7 +44,7 @@ resource "azurerm_network_security_rule" "nsg-rule" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "80"
-  source_address_prefix       = "185.203.216.208" # You need to use your connecting system public IP address, use ipchicken.com
+  source_address_prefix       = "185.203.216.232" # You need to use your connecting system public IP address, use ipchicken.com
   destination_address_prefix  = "*"
   resource_group_name         = var.rg_name
   network_security_group_name = azurerm_network_security_group.nsg.name
