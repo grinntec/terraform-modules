@@ -21,7 +21,7 @@ resource "azurerm_public_ip" "pip_lb" {
 }
 
 resource "azurerm_lb" "lb" {
-  name                = "LoadBalancer"
+  name                = "PublicLoadBalancer"
   location            = var.rg_location
   resource_group_name = var.rg_name
 
