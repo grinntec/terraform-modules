@@ -1,3 +1,29 @@
+///
+/LOCALS
+///
+locals {
+  tags = {
+    env = var.environment
+  }
+}
+
+///
+/DATA SOURCE
+///
+data "azurerm_subnet" "subnet" {
+  name = var.subnet_name
+  virtual_network_name = var.vnet_name
+  resource_group_name = var.rg_name
+}
+
+output Subnet_id" {
+  value = "${data.azurerm_subnet.subnet.id}"
+}
+
+///
+/RESOURCES
+///
+
 # Create network security group
 resource "azurerm_network_security_group" "nsg" {
   name                = "nsg"
@@ -9,7 +35,7 @@ resource "azurerm_network_security_group" "nsg" {
 
 # Associate the network security group with the subnet
 resource "azurerm_subnet_network_security_group_association" "nsg-association" {
-  subnet_id                 = var.subnet_name
+  subnet_id                 = data.azurerm_subnet.subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
@@ -27,12 +53,5 @@ resource "azurerm_network_security_rule" "nsg-rule" {
   resource_group_name         = var.rg_name
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
-////////////////////////////////////////////////////////////////////////////////////////
-// LOCALS
-////////////////////////////////////////////////////////////////////////////////////////
-locals {
-  tags = {
-    env = var.environment
-  }
-}
+
 
