@@ -58,9 +58,9 @@ resource "azurerm_lb_rule" "public_lb_inbound_rules" {
 
 #Create Probe
 resource "azurerm_lb_probe" "http_inbound_probe" {
-  loadbalancer_id     = azurerm_lb.public_lb.id
-  name                = "http_inbound_probe"
-  port                = 80
+  loadbalancer_id = azurerm_lb.public_lb.id
+  name            = "http_inbound_probe"
+  port            = 80
 }
 
 #Create Backend Address Pool
