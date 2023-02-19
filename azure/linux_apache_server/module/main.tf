@@ -31,13 +31,13 @@ resource "random_id" "random_id" {
   byte_length = 8
 }
 
-/*# Create resource group
+# Create resource group
 resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
   location = var.rg_location
 
   tags = local.tags
-}*/
+}
 
 # Create public IP address
 resource "azurerm_public_ip" "pip" {
