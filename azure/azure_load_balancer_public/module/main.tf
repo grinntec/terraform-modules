@@ -50,7 +50,7 @@ resource "azurerm_lb_rule" "public_lb_inbound_rules" {
   name                           = "inbound_rule_http"
   protocol                       = "Tcp"
   frontend_port                  = var.frontend_port
-  backend_port                   = var.baclendtend_port
+  backend_port                   = var.backend_port
   frontend_ip_configuration_name = "PublicIPAddress"
   probe_id                       = azurerm_lb_probe.http_inbound_probe.id
   backend_address_pool_ids       = ["${azurerm_lb_backend_address_pool.backend_pool.id}"]
