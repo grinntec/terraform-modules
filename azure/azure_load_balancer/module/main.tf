@@ -44,7 +44,7 @@ resource "azurerm_lb_rule" "public_lb_inbound_rules" {
   backend_port                   = 80
   frontend_ip_configuration_name = "PublicIPAddress"
   probe_id                       = azurerm_lb_probe.http_inbound_probe.id
-  backend_address_pool_ids       = ["${azurerm_lb_backend_address_pool.business-backend-pool.id}"]
+  backend_address_pool_ids       = ["${azurerm_lb_backend_address_pool.backend_pool.id}"]
 
 
 }
@@ -55,4 +55,10 @@ resource "azurerm_lb_probe" "http_inbound_probe" {
   loadbalancer_id     = azurerm_lb.public_lb.id
   name                = "http_inbound_probe"
   port                = 80
+}
+
+#Create Backend Address Pool
+resource "azurerm_lb_backend_address_pool" "backend_pool" {
+  loadbalancer_id = azurerm_lb.public_lb.id
+  name            = "backend_pool"
 }
