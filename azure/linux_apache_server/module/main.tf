@@ -42,8 +42,8 @@ resource "azurerm_resource_group" "rg" {
 # Create public IP address
 resource "azurerm_public_ip" "pip" {
   name                = "pip_${lower(random_id.random_id.hex)}"
-  resource_group_name = var.rg_name
-  location            = var.rg_location
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
   allocation_method   = "Dynamic"
 
   tags = local.tags
@@ -52,8 +52,8 @@ resource "azurerm_public_ip" "pip" {
 # Create a network interface card and assign an IP from the subnet and attach the PIP
 resource "azurerm_network_interface" "nic" {
   name                = "nic_${lower(random_id.random_id.hex)}"
-  location            = var.rg_name
-  resource_group_name = var.rg_location
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
 
   ip_configuration {
     name                          = "internal"
@@ -68,8 +68,8 @@ resource "azurerm_network_interface" "nic" {
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "storage_account" {
   name                     = "diag${lower(random_id.random_id.hex)}"
-  resource_group_name      = var.rg_name
-  location                 = var.rg_location
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
@@ -83,8 +83,8 @@ resource "tls_private_key" "example_ssh" {
 # Create a virtual machine
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = "vm${random_id.random_id.hex}"
-  resource_group_name = var.rg_name
-  location            = var.rg_location
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
   size                = "Standard_B1s"
   network_interface_ids = [
     azurerm_network_interface.nic.id
