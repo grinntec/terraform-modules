@@ -37,6 +37,20 @@ resource "azurerm_subnet_network_security_group_association" "nsg-association" {
 
 # Create network security group rule
 resource "azurerm_network_security_rule" "nsg-rule" {
+  name                        = var.nsg_rule_name
+  priority                    = var.nsg_rule_priority
+  direction                   = var.nsg_rule_direction
+  access                      = var.nsg_rule_access
+  protocol                    = var.nsg_rule_protocol
+  source_port_range           = "*"
+  destination_port_range      = var.nsg_rule_destination_port
+  source_address_prefix       = var.nsg_rule_source
+  destination_address_prefix  = "*"
+  resource_group_name         = var.rg_name
+  network_security_group_name = azurerm_network_security_group.nsg.name
+}
+/*# Create network security group rule
+resource "azurerm_network_security_rule" "nsg-rule" {
   name                        = "rule01"
   priority                    = 100
   direction                   = "Inbound"
@@ -48,4 +62,4 @@ resource "azurerm_network_security_rule" "nsg-rule" {
   destination_address_prefix  = "*"
   resource_group_name         = var.rg_name
   network_security_group_name = azurerm_network_security_group.nsg.name
-}
+}*/
