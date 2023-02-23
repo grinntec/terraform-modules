@@ -1,25 +1,25 @@
-///
 // LOCALS
-///
+//-------
+
 locals {
   tags = {
     env = var.environment
   }
 }
 
-///
-// DATA SOURCES
-///
 
+// DATA SOURCES
+//--------------
+
+# Get the subnet details
 data "azurerm_subnet" "subnet" {
   name                 = var.subnet_name
   virtual_network_name = var.vnet_name
   resource_group_name  = var.rg_name_vnet
 }
 
-///
 // RESOURCES
-///
+//----------
 
 # Generate random text for a unique storage account name
 resource "random_id" "random_id" {
@@ -57,8 +57,8 @@ resource "azurerm_network_interface" "nic" {
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "storage_account" {
   name                     = "diag${lower(random_id.random_id.hex)}"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
