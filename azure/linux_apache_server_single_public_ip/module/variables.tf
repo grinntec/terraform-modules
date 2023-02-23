@@ -1,13 +1,15 @@
 variable "rg_name" {
+  description = "Name of the resource group where the workload will be stored"
   type = string
 }
 
 variable "rg_location" {
+  description = "Location of the resource group where the workload will be stored"
   type = string
 }
 
 variable "environment" {
-  description = "Prod, Test, Dev"
+  description = "Set the workload environment type: Prod, Test, Dev"
   type        = string
 }
 
@@ -27,6 +29,6 @@ variable "rg_name_vnet" {
 }
 
 variable "name" {
-  description = "Name of the application"
+  description = "Name of the workload"
   type        = string
 }
