@@ -118,8 +118,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
 #Create public IP for load balancer
 resource "azurerm_public_ip" "pip_public_lb" {
   name                = "PublicIPForLB"
-  location            = var.rg_location
-  resource_group_name = var.rg_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   tags                = local.tags
 }
@@ -127,8 +127,8 @@ resource "azurerm_public_ip" "pip_public_lb" {
 #Create load balancer and attached public IP to front end
 resource "azurerm_lb" "public_lb" {
   name                = "LoadBalancerPublic"
-  location            = var.rg_location
-  resource_group_name = var.rg_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
 
   frontend_ip_configuration {
     name                 = "PublicIPAddress"
