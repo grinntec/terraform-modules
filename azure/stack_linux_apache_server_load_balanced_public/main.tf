@@ -121,7 +121,7 @@ resource "azurerm_public_ip" "pip_public_lb" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
-  tags                = local.tags a
+  tags                = local.tags
 }
 
 # Create a load balancer and attach the public IP to front end
