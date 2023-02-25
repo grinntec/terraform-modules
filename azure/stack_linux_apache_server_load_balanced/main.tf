@@ -9,7 +9,7 @@ locals {
 
 
 // DATA SOURCES
-//--------------
+//-------------
 
 # Get the subnet details
 data "azurerm_subnet" "subnet" {
@@ -21,7 +21,7 @@ data "azurerm_subnet" "subnet" {
 // RESOURCES
 //----------
 
-# Generate random text for a unique storage account name
+# Generate random text for a unique name for the resources
 resource "random_id" "random_id" {
   keepers = {
     # Generate a new ID only when a new resource group is defined
@@ -39,14 +39,14 @@ resource "azurerm_resource_group" "rg" {
   tags = local.tags
 }
 
-# Create a network interface card and assign an IP from the subnet and attach the PIP
+# Create a network interface card and assign an IP from the subnet in the variable
 resource "azurerm_network_interface" "nic" {
   name                = "nic_${lower(random_id.random_id.hex)}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 
   ip_configuration {
-    name                          = "internal"
+    name                          = "private"
     subnet_id                     = data.azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
   }
@@ -75,16 +75,20 @@ resource "azurerm_linux_virtual_machine" "vm" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = "Standard_B1s"
+  
+  # Attach the NIC with the private IP created earlier
   network_interface_ids = [
     azurerm_network_interface.nic.id
   ]
 
+  # Create the OS disk
   os_disk {
     name                 = "os_disk_${random_id.random_id.hex}"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
+  # Use the public machine image
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
@@ -111,20 +115,16 @@ resource "azurerm_linux_virtual_machine" "vm" {
   tags = local.tags
 }
 
-//---------------------------
-//RESOURCES
-//---------
-
-#Create public IP for load balancer
+# Create a public IP for load balancer
 resource "azurerm_public_ip" "pip_public_lb" {
   name                = "PublicIPForLB"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
-  tags                = local.tags
+  tags                = local.tags a
 }
 
-#Create load balancer and attached public IP to front end
+# Create a load balancer and attach the public IP to front end
 resource "azurerm_lb" "public_lb" {
   name                = "LoadBalancerPublic"
   resource_group_name = azurerm_resource_group.rg.name
@@ -137,7 +137,27 @@ resource "azurerm_lb" "public_lb" {
   tags = local.tags
 }
 
-#Create Load balancing rules
+# Create a health probe for the backend pool VM
+resource "azurerm_lb_probe" "http_inbound_probe" {
+  loadbalancer_id = azurerm_lb.public_lb.id
+  name            = "http_inbound_probe"
+  port            = var.health_probe_port
+}
+
+# Create a bBackend address pool
+resource "azurerm_lb_backend_address_pool" "backend_pool" {
+  loadbalancer_id = azurerm_lb.public_lb.id
+  name            = "backend_pool"
+}
+
+# Add a virtual machine NIC to the backend pool
+resource "azurerm_network_interface_backend_address_pool_association" "bep_association" {
+  network_interface_id    = azurerm_network_interface.nic.id
+  ip_configuration_name   = "internal"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
+}
+
+# Create Load balancing rules
 resource "azurerm_lb_rule" "public_lb_inbound_rules" {
   loadbalancer_id                = azurerm_lb.public_lb.id
   name                           = "inbound_rule_http"
@@ -147,24 +167,4 @@ resource "azurerm_lb_rule" "public_lb_inbound_rules" {
   frontend_ip_configuration_name = "PublicIPAddress"
   probe_id                       = azurerm_lb_probe.http_inbound_probe.id
   backend_address_pool_ids       = ["${azurerm_lb_backend_address_pool.backend_pool.id}"]
-}
-
-#Create Probe
-resource "azurerm_lb_probe" "http_inbound_probe" {
-  loadbalancer_id = azurerm_lb.public_lb.id
-  name            = "http_inbound_probe"
-  port            = var.health_probe_port
-}
-
-#Create Backend Address Pool
-resource "azurerm_lb_backend_address_pool" "backend_pool" {
-  loadbalancer_id = azurerm_lb.public_lb.id
-  name            = "backend_pool"
-}
-
-#Add a virtual machine NIC to the backend pool
-resource "azurerm_network_interface_backend_address_pool_association" "bep_association" {
-  network_interface_id    = azurerm_network_interface.nic.id
-  ip_configuration_name   = "internal"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
 }
