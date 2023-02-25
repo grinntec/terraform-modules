@@ -1,0 +1,10 @@
+rg_name           = "stack_linux_apache_server_load_balanced_public"
+rg_location       = "west europe"
+environment       = "dev"
+subnet_name       = "subnet01"
+vnet_name         = "vnet-grinntec-sandbox"
+rg_name_vnet      = "networking"
+name              = "apache-server"
+frontend_port     = 80
+backend_port      = 80
+health_probe_port = 80
