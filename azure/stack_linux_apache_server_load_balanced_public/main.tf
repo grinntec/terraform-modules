@@ -155,8 +155,8 @@ resource "azurerm_lb_backend_address_pool" "backend_pool" {
 
 # Add a virtual machine NIC to the backend pool
 resource "azurerm_network_interface_backend_address_pool_association" "bep_association" {
-  count = length(azurerm_network_interface.nic)
-  network_interface_id    = "${element(azurerm_network_interface.nic.*.id, count.index)}"
+  count                   = length(azurerm_network_interface.nic)
+  network_interface_id    = element(azurerm_network_interface.nic.*.id, count.index)
   ip_configuration_name   = "private"
   backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
 }
