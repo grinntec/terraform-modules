@@ -34,6 +34,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_environment"></a> [environment](#input\_environment) | Set the workload environment type: Prod, Test, Dev | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the workload | `string` | n/a | yes |
+| <a name="input_node_count"></a> [node\_count](#input\_node\_count) | Number of VMs | `string` | n/a | yes |
 | <a name="input_rg_location"></a> [rg\_location](#input\_rg\_location) | Location of the resource group where the workload will be stored | `string` | n/a | yes |
 | <a name="input_rg_name"></a> [rg\_name](#input\_rg\_name) | Name of the resource group where the workload will be stored | `string` | n/a | yes |
 | <a name="input_rg_name_vnet"></a> [rg\_name\_vnet](#input\_rg\_name\_vnet) | Name of the resource group for the virtual network | `string` | n/a | yes |

@@ -1,11 +1,11 @@
 variable "rg_name" {
   description = "Name of the resource group where the workload will be stored"
-  type = string
+  type        = string
 }
 
 variable "rg_location" {
   description = "Location of the resource group where the workload will be stored"
-  type = string
+  type        = string
 }
 
 variable "environment" {
@@ -30,5 +30,10 @@ variable "rg_name_vnet" {
 
 variable "name" {
   description = "Name of the workload"
+  type        = string
+}
+
+variable "node_count" {
+  description = "Number of VMs"
   type        = string
 }
