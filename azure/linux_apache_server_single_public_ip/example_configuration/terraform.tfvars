@@ -1,0 +1,7 @@
+rg_name      = "linux_apache_server_single_public_ip"
+rg_location  = "west europe"
+environment  = "dev"
+subnet_name  = "subnet01"
+vnet_name    = "vnet-grinntec-sandbox"
+rg_name_vnet = "networking"
+name         = "apache-server"
