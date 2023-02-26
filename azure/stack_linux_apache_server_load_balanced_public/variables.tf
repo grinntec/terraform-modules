@@ -1,11 +1,11 @@
 variable "rg_name" {
   description = "Name of the resource group hosting the workload"
-  type = string
+  type        = string
 }
 
 variable "rg_location" {
   description = "Location of the resource group hosting the workload"
-  type = string
+  type        = string
 }
 
 variable "environment" {
@@ -45,5 +45,10 @@ variable "backend_port" {
 
 variable "health_probe_port" {
   description = "Listening port on the backendend"
+  type        = string
+}
+
+variable "node_count" {
+  description = "Number of VMs"
   type        = string
 }

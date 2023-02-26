@@ -1,34 +1,32 @@
-///
 // LOCALS
-///
+//-------
 locals {
   tags = {
     env = var.environment
   }
 }
 
-///
 // DATA SOURCES
-///
+//-------------
 
+# Get the subnet details
 data "azurerm_subnet" "subnet" {
   name                 = var.subnet_name
   virtual_network_name = var.vnet_name
   resource_group_name  = var.rg_name_vnet
 }
 
-///
 // RESOURCES
-///
+//----------
 
-# Generate random text for a unique storage account name
+# Generate random text for a unique name for the resources
 resource "random_id" "random_id" {
   keepers = {
     # Generate a new ID only when a new resource group is defined
     resource_group = azurerm_resource_group.rg.name
   }
 
-  byte_length = 8
+  byte_length = 4
 }
 
 # Create resource group
@@ -39,7 +37,7 @@ resource "azurerm_resource_group" "rg" {
   tags = local.tags
 }
 
-# Create public IP address
+# Create public IP address for the VM
 resource "azurerm_public_ip" "pip" {
   count               = var.node_count
   name                = "pip_${lower(random_id.random_id.hex)}${count.index}"
@@ -89,16 +87,20 @@ resource "azurerm_linux_virtual_machine" "vm" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = "Standard_B1s"
+
+    # Attach the NIC created earlier
   network_interface_ids = [
     element(azurerm_network_interface.nic.*.id, count.index)
   ]
 
+  # Create the OS disk
   os_disk {
     name                 = "os_disk_${random_id.random_id.hex}${count.index}"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
+  # Use the public machine image
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"

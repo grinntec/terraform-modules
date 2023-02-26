@@ -42,6 +42,7 @@ No modules.
 | <a name="input_frontend_port"></a> [frontend\_port](#input\_frontend\_port) | Listening port on the frontnend | `string` | n/a | yes |
 | <a name="input_health_probe_port"></a> [health\_probe\_port](#input\_health\_probe\_port) | Listening port on the backendend | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the application | `string` | n/a | yes |
+| <a name="input_node_count"></a> [node\_count](#input\_node\_count) | Number of VMs | `string` | n/a | yes |
 | <a name="input_rg_location"></a> [rg\_location](#input\_rg\_location) | Location of the resource group hosting the workload | `string` | n/a | yes |
 | <a name="input_rg_name"></a> [rg\_name](#input\_rg\_name) | Name of the resource group hosting the workload | `string` | n/a | yes |
 | <a name="input_rg_name_vnet"></a> [rg\_name\_vnet](#input\_rg\_name\_vnet) | Name of the resource group for the virtual network | `string` | n/a | yes |

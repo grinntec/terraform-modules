@@ -1,12 +1,10 @@
 // LOCALS
 //-------
-
 locals {
   tags = {
     env = var.environment
   }
 }
-
 
 // DATA SOURCES
 //-------------
@@ -28,7 +26,7 @@ resource "random_id" "random_id" {
     resource_group = azurerm_resource_group.rg.name
   }
 
-  byte_length = 8
+  byte_length = 4
 }
 
 # Create resource group
@@ -39,9 +37,20 @@ resource "azurerm_resource_group" "rg" {
   tags = local.tags
 }
 
+# Create a public IP for the load balancer
+resource "azurerm_public_ip" "pip_public_lb" {
+  name                = "PublicIPForLB"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  allocation_method   = "Static"
+  tags                = local.tags
+}
+
+
 # Create a network interface card and assign an IP from the subnet in the variable
 resource "azurerm_network_interface" "nic" {
-  name                = "nic_${lower(random_id.random_id.hex)}"
+  count               = var.node_count
+  name                = "nic_${lower(random_id.random_id.hex)}${count.index}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 
@@ -71,19 +80,20 @@ resource "tls_private_key" "example_ssh" {
 
 # Create a virtual machine
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                = "vm${random_id.random_id.hex}"
+  count               = var.node_count
+  name                = "vm${random_id.random_id.hex}${count.index}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = "Standard_B1s"
-  
-  # Attach the NIC with the private IP created earlier
+
+  # Attach the NIC created earlier
   network_interface_ids = [
-    azurerm_network_interface.nic.id
+    element(azurerm_network_interface.nic.*.id, count.index)
   ]
 
   # Create the OS disk
   os_disk {
-    name                 = "os_disk_${random_id.random_id.hex}"
+    name                 = "os_disk_${random_id.random_id.hex}${count.index}"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
@@ -115,14 +125,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   tags = local.tags
 }
 
-# Create a public IP for load balancer
-resource "azurerm_public_ip" "pip_public_lb" {
-  name                = "PublicIPForLB"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  allocation_method   = "Static"
-  tags                = local.tags
-}
+
 
 # Create a load balancer and attach the public IP to front end
 resource "azurerm_lb" "public_lb" {
@@ -144,7 +147,7 @@ resource "azurerm_lb_probe" "http_inbound_probe" {
   port            = var.health_probe_port
 }
 
-# Create a bBackend address pool
+# Create a backend address pool
 resource "azurerm_lb_backend_address_pool" "backend_pool" {
   loadbalancer_id = azurerm_lb.public_lb.id
   name            = "backend_pool"
@@ -152,7 +155,7 @@ resource "azurerm_lb_backend_address_pool" "backend_pool" {
 
 # Add a virtual machine NIC to the backend pool
 resource "azurerm_network_interface_backend_address_pool_association" "bep_association" {
-  network_interface_id    = azurerm_network_interface.nic.id
+  network_interface_id    = element(azurerm_network_interface.nic.*.id, count.index)
   ip_configuration_name   = "private"
   backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
 }
