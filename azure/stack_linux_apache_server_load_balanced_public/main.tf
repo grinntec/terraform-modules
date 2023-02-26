@@ -65,11 +65,13 @@ resource "azurerm_network_interface" "nic" {
 
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "storage_account" {
-  name                     = "diag${lower(random_id.random_id.hex)}"
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+  name                          = "diag${lower(random_id.random_id.hex)}"
+  resource_group_name           = azurerm_resource_group.rg.name
+  location                      = azurerm_resource_group.rg.location
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  min_tls_version               = "TLS1_2"
+  public_network_access_enabled = false
 }
 
 # Create (and display) an SSH key
@@ -90,12 +92,13 @@ resource "azurerm_availability_set" "availset" {
 
 # Create a virtual machine
 resource "azurerm_linux_virtual_machine" "vm" {
-  count               = var.node_count
-  name                = "vm_${random_id.random_id.hex}_${count.index}"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  availability_set_id = azurerm_availability_set.availset.id
-  size                = "Standard_B1s"
+  count                      = var.node_count
+  name                       = "vm_${random_id.random_id.hex}_${count.index}"
+  resource_group_name        = azurerm_resource_group.rg.name
+  location                   = azurerm_resource_group.rg.location
+  availability_set_id        = azurerm_availability_set.availset.id
+  size                       = "Standard_B1s"
+  allow_extension_operations = false
 
   # Attach the NIC created earlier
   network_interface_ids = [
