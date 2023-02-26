@@ -94,7 +94,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "vm${random_id.random_id.hex}${count.index}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  availability_set_id = azurerm_availability_set.avset.id
+  availability_set_id = azurerm_availability_set.availset.id
   size                = "Standard_B1s"
 
   # Attach the NIC created earlier
