@@ -78,12 +78,23 @@ resource "tls_private_key" "example_ssh" {
   rsa_bits  = 4096
 }
 
+# Create availability set for the VMs
+resource "azurerm_availability_set" "availset" {
+  name                         = "availset"
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = azurerm_resource_group.rg.location
+  platform_fault_domain_count  = 2
+  platform_update_domain_count = 2
+  managed                      = true
+}
+
 # Create a virtual machine
 resource "azurerm_linux_virtual_machine" "vm" {
   count               = var.node_count
   name                = "vm${random_id.random_id.hex}${count.index}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
+  availability_set_id = azurerm_availability_set.avset.id
   size                = "Standard_B1s"
 
   # Attach the NIC created earlier
@@ -124,8 +135,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   tags = local.tags
 }
-
-
 
 # Create a load balancer and attach the public IP to front end
 resource "azurerm_lb" "public_lb" {
