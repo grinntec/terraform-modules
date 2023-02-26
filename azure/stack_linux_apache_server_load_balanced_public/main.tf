@@ -117,7 +117,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 
-  computer_name                   = "vm_${random_id.random_id.hex}_${count.index}"
+  computer_name                   = "vm${random_id.random_id.hex}${count.index}"
   admin_username                  = "adminuser"
   disable_password_authentication = true
 
