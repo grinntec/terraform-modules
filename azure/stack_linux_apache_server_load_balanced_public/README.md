@@ -52,7 +52,5 @@ No modules.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_lb_public_ip_address"></a> [lb\_public\_ip\_address](#output\_lb\_public\_ip\_address) | Web Load Balancer Public Address |
+No outputs.
 <!-- END_TF_DOCS -->
